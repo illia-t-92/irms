@@ -8,6 +8,6 @@ class BrandSerializer(serializers.ModelSerializer):
             "id",
             "code",
             "name",
-            "slug",
+            "brand_slug",
             "get_absolute_url",
         )

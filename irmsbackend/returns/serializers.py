@@ -5,10 +5,12 @@ from brands.serializers import BrandSerializer
 
 class ReturnRecordSerializer(serializers.ModelSerializer):
     brand=BrandSerializer()
+    status_verbose=serializers.CharField(source='get_status_display')
 
     class Meta:
         model=ReturnRecord
         fields=(
+            'uuid',
             'return_id',
             'operation_date',
             'amount',
@@ -21,12 +23,22 @@ class ReturnRecordSerializer(serializers.ModelSerializer):
             'sender_company_name',
             'sender_bank_account',
             'payment_details',
-            'brand',
             'status',
+            'status_verbose',
             'comments',
-            'updated_at',
-            'created_by',
+            'get_absolute_url',
+            'brand',
         )
+        '''
+        read_only_fields=[
+            'uuid',
+            'sender_bank_code',
+            'sender_company_name',
+            'sender_bank_account',
+            'status_verbose',
+            'get_absolute_url',
+        ]
+        '''
 
     def create(self, validated_data):
         brand_data = validated_data.pop('brand')
@@ -35,3 +47,8 @@ class ReturnRecordSerializer(serializers.ModelSerializer):
         record=ReturnRecord.objects.create(**validated_data)
             
         return record
+    
+    def update(self, instance, validated_data):
+        #remove brand from validated data as it should never be changed on update
+        validated_data.pop('brand')
+        return super(ReturnRecordSerializer, self).update(instance, validated_data)  

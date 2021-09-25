@@ -1,4 +1,5 @@
 from django.db import models
+import uuid
 
 
 class ReturnRecord(models.Model):
@@ -10,14 +11,16 @@ class ReturnRecord(models.Model):
     REVIEW='REVIEW'
     BLOCK='BLOCK'
     STATUS_CHOICES=[
-        (NEW, 'New record'),
-        (OK, 'Proceed with payment'),
-        (CHECK, 'Manual check needed'),
-        (PAID, 'Return was paid'),
-        (REVIEW, 'Under review'),
-        (BLOCK, 'Blocked return'),
+        (NEW, 'New'),
+        (OK, 'Proceed'),
+        (CHECK, 'Check'),
+        (PAID, 'Paid'),
+        (REVIEW, 'Review'),
+        (BLOCK, 'Block'),
     ]
 
+
+    uuid=models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
     return_id=models.BigIntegerField(unique=True)
     operation_date=models.DateTimeField()
     amount=models.DecimalField(max_digits=10, decimal_places=2)
@@ -38,6 +41,9 @@ class ReturnRecord(models.Model):
 
     def __str__(self):
         return f'Return # {self.return_id} for order {self.order_id}'
+
+    def get_absolute_url(self):
+        return f'return-record/{self.uuid}/detail'
 
     class Meta:
         ordering=['-operation_date']
