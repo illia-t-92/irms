@@ -299,7 +299,7 @@ import { required, maxLength, minLength, integer, decimal } from 'vuelidate/lib/
             type: 'error',
         },
         isEditing: false,
-        valid: false,
+        valid: false, 
         item: {},
         brands: [],
         statusChoices: [

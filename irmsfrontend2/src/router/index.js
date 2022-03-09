@@ -4,6 +4,7 @@ import Main from '../views/Main.vue'
 import Home from '../views/Home.vue'
 import Login from '../views/Login.vue'
 import Records from '../views/Records.vue'
+import AddRecord from '../views/AddRecord.vue'
 import RecordDetails from '../views/RecordDetails.vue'
 import store from '@/store'
 
@@ -36,6 +37,14 @@ const routes = [
         path: '/returns-list',
         name: 'records_list',
         component: Records,
+        meta: {
+          requireLogin: true
+        },
+      },
+      {
+        path: '/add-record',
+        name: 'add_record',
+        component: AddRecord,
         meta: {
           requireLogin: true
         },

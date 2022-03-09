@@ -67,6 +67,12 @@ import axios from 'axios'
           icon: 'mdi-view-list',
           title: 'Returns list',
           route: '/returns-list'
+        },
+        {
+          key: '4',
+          icon: 'mdi-plus',
+          title: 'Add manual return',
+          route: '/add-record'
         }
         
       ]

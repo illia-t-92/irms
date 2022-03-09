@@ -1,5 +1,28 @@
 <template>
     <div>
+        <!--
+        <div class="d-flex justify-end ma-4">
+            <v-tooltip left>
+                <template v-slot:activator="{ on, attrs }">
+                    <v-btn
+                    fixed 
+                    middle
+                    class="mx-2"
+                    fab
+                    dark
+                    color="indigo"
+                    v-bind="attrs"
+                    v-on="on"
+                    >
+                    <v-icon dark>
+                        mdi-plus
+                    </v-icon>
+                    </v-btn>
+                </template>
+                <span>Add manual return</span>
+            </v-tooltip>
+        </div>
+        -->
         <v-data-table
             :headers="headers"
             :items="records"
