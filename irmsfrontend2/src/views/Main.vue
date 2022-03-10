@@ -3,6 +3,7 @@
       <v-navigation-drawer
         v-model="drawer"
         app
+        temporary
       >
         <MenuList :menuItems="items"
                   title="Returns manager"

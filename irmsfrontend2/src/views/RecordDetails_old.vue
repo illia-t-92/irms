@@ -277,15 +277,7 @@ import { required, maxLength, minLength, integer, decimal } from 'vuelidate/lib/
 
  export default {
     mixins: [validationMixin],
-    props: {
-        record_uuid: {
-            type: String
-            },
-        addingRecord: { 
-            type: Boolean,
-            required: true
-         },
-        },
+    props: ['record_uuid'],
     validations: {
         item: {
             return_id: { required, integer },
@@ -458,19 +450,10 @@ import { required, maxLength, minLength, integer, decimal } from 'vuelidate/lib/
     },
     created () {
         document.title='Record detail' + '| Returns manager'
-        //for creating new records we do not need to make initial call to the API
-        if (!this.addingRecord) {
-                this.loadRecordFromAPI()
-
-            }
-        else {
-            this.isEditing=true
-        }
-        //but we need to populate the brands drop-down list
+        this.loadRecordFromAPI()
         this.loadBrandsList()
     },
     watch: {
-        //watch for alert message to fade
         alert(new_val){
             if(new_val){
                 setTimeout(()=>{this.alert.display=false},2000)
