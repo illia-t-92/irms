@@ -18,7 +18,7 @@
     >
         <v-container d-flex justify-space-around>
             <v-form
-                :disabled="!isEditing"
+                :disabled="!isEditing && !addingRecord"
                 @submit.prevent="submit"
             >
                 <v-row align="center">
@@ -32,8 +32,8 @@
                         item-text="name"
                         item-value="id"
                         label="Brand"
-                        readonly
-                        disabled
+                        :readonly="!addingRecord"
+                        :disabled="!addingRecord"
                         ></v-select>
                     </v-col>
                 </v-row>
