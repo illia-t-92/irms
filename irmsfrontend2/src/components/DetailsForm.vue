@@ -271,7 +271,6 @@
 
 <script>
 import axios from 'axios'
-import loadRecordFromAPI from '../actions/submitForm';
 import { validationMixin } from 'vuelidate'
 import { required, maxLength, minLength, integer, decimal } from 'vuelidate/lib/validators'
 
@@ -346,8 +345,8 @@ import { required, maxLength, minLength, integer, decimal } from 'vuelidate/lib/
                 this.$router.go(-1)
             }
         },
-        async prepareRecordFromAPI(){
-            await loadRecordFromAPI()
+        async loadRecordFromAPI(){
+            return axios.get(`/api/v1/return-record/${this.record_uuid}/detail`)
             .then(response =>{
                 this.item=response.data
             })
