@@ -218,7 +218,7 @@
                     </v-col>
                 </v-row>
                 <v-row>
-                <div v-if="!isEditing">
+                <div v-if="!isEditing && !addingRecord">
                         <v-btn
                             class="ml-2 mb-2"
                             color="warning"
@@ -253,7 +253,7 @@
                         <v-btn 
                             class="ml-2 mb-2"
                             color="error" 
-                            @click="isEditing=!isEditing"
+                            @click="cancelEdit()"
                         >
                         <v-icon left>
                             mdi-cancel
@@ -271,6 +271,7 @@
 
 <script>
 import axios from 'axios'
+import loadRecordFromAPI from '../actions/submitForm';
 import { validationMixin } from 'vuelidate'
 import { required, maxLength, minLength, integer, decimal } from 'vuelidate/lib/validators'
 
@@ -338,15 +339,22 @@ import { required, maxLength, minLength, integer, decimal } from 'vuelidate/lib/
             ],
     }),
     methods: {
-        async loadRecordFromAPI(){
-            
-            await axios.get(`/api/v1/return-record/${this.record_uuid}/detail`)
+        cancelEdit() {
+            if (!this.addingRecord) {
+                this.isEditing=!this.isEditing
+            } else {
+                this.$router.go(-1)
+            }
+        },
+        async prepareRecordFromAPI(){
+            await loadRecordFromAPI()
             .then(response =>{
                 this.item=response.data
             })
             .catch(error =>{
                 console.log(error)
             })
+            
         },
         async loadBrandsList(){
             

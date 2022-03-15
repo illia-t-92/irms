@@ -68,7 +68,7 @@ export default {
             headers: [
                 { text: 'Return ID', value: 'return_id', align: 'center' },
                 { text: 'Order ID', value: 'order_id', align: 'center' },
-                { text: 'Request data', value: 'operation_date', align: 'center' },
+                { text: 'Request date', value: 'operation_date', align: 'center' },
                 { text: 'Amount', value: 'amount', align: 'center' },
                 { text: 'Customer name', value: 'customer_name', align: 'center' },
                 { text: 'Customer surname', value: 'customer_surname', align: 'center' },

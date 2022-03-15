@@ -68,7 +68,7 @@ export default {
             message: '',
             type: 'error',
         },
-        usernameRule:[v => !!v || 'Email is required'],
+        usernameRule:[v => !!v || 'Username is required'],
         passwordRule:[v => !!v || 'Password is required'],
     }),
     methods: {
