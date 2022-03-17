@@ -382,7 +382,7 @@ import { required, maxLength, minLength, integer, decimal } from 'vuelidate/lib/
                         }
                     }
                 )
-                .then(response =>{
+                .then(response => {
                     this.isEditing=false
                     this.alert={
                         display: true,
