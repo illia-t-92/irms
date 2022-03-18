@@ -17,7 +17,7 @@
     nav
     >
     <v-list-item
-      v-for="item in menuItems"
+      v-for="item in items"
       :key="item.id"
       link
       :to="item.route"
@@ -37,10 +37,37 @@
 <script>
 
 export default {
-    props:{
-        menuItems : [],
-        title: String,
-        subtitle: String,
-    },
+    data: () => ({
+      drawer: false,
+      title: "Returns manager",
+      subtitle: "Menu",
+      items: [
+        {
+          key: '1',
+          icon: 'mdi-home',
+          title: 'Home',
+          route: '/home'
+        },
+        {
+          key: '2',
+          icon: 'mdi-information',
+          title: 'About',
+          route: '/About'
+        },
+        {
+          key: '3',
+          icon: 'mdi-view-list',
+          title: 'Returns list',
+          route: '/returns-list'
+        },
+        {
+          key: '4',
+          icon: 'mdi-plus',
+          title: 'Add manual return',
+          route: '/add-record'
+        }
+        
+      ]
+    }),
 }
 </script>

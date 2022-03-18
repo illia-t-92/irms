@@ -7,6 +7,12 @@ export default new Vuex.Store({
   state: {
     isAuthenticated: false,
     token: '',
+    drawerState: false,
+    alert: {
+      status: false,
+      type: '',
+      message: '',
+    },
   },
   mutations: {
     initializeStore(state){
@@ -25,7 +31,21 @@ export default new Vuex.Store({
     removeToken(state) {
       state.token = ''
       state.isAuthenticated = false
+    },
+    toggleDrawerState (state, data) {
+      state.drawerState = data 
+    },
+    showAlert (state, data) {
+      state.alert.status = true
+      state.alert.type = data.alertType
+      state.alert.message = data.alertMessage
+    },
+    dismissAlert () {
+      state.alert.status = false
     }
+  },
+  getters: {
+    drawerState: (state) => state.drawerState
   },
   actions: {
   },

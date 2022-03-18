@@ -2,7 +2,7 @@
     <v-container>
         <v-alert
             class="mt-n16"
-            :value="alert.display"
+            :value="alert.status"
             :type="alert.type"
             transition="fade-transition"
             dismissible
@@ -13,34 +13,17 @@
 </template>
 
 <script>
+import { mapState, mapMutations } from 'vuex'
+
 export default {
-    props: {
-        message: {
-            type: String
-        },
-        alertType: {
-            type: String
-        }
-    }, 
-    data: () => ({
-        alert: {
-            display: false,
-        },
-    }),
     methods: {
-        show(message, type) {
-            this.display = true
-            this.message = message
-            this.type = type
-        },
-        watch: {
-        //watch for alert message to fade
-        alert(new_val){
-            if(new_val){
-                setTimeout(()=>{this.alert.display=false},2000)
-                }
-            }   
-        }   
+        ...mapMutations({
+            showAlert: 'showAlert',
+            dismissAlert: 'dismissAlert'
+      }),
+    computed: mapState ({
+        alert: 'alert'
+    }),   
     }
 }
 </script>

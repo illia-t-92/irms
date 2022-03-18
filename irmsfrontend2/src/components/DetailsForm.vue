@@ -231,7 +231,7 @@
                         </v-btn>
                         <v-btn 
                             class="ml-2 mb-2" 
-                            @click= "$router.go(-1)"
+                            @click="returnToList()"
                         >
                         <v-icon left>
                             mdi-arrow-left
@@ -345,6 +345,9 @@ import { required, maxLength, minLength, integer, decimal } from 'vuelidate/lib/
                 this.$router.go(-1)
             }
         },
+        returnToList() {
+                this.$router.go(-1)
+            },
         async loadRecordFromAPI(){
             return axios.get(`/api/v1/return-record/${this.record_uuid}/detail`)
             .then(response =>{
