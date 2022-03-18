@@ -11,7 +11,7 @@ export default new Vuex.Store({
     alert: {
       status: false,
       type: '',
-      message: '',
+      messages: '',
     },
   },
   mutations: {
@@ -36,12 +36,14 @@ export default new Vuex.Store({
       state.drawerState = data 
     },
     showAlert (state, data) {
-      state.alert.status = true
-      state.alert.type = data.alertType
-      state.alert.message = data.alertMessage
+      state.alert = {
+        status: true,
+        type: data.alertType,
+        messages: data.alertMessages
+      }
     },
-    dismissAlert () {
-      state.alert.status = false
+    dismissAlert (state) {
+      state.alert.status=false
     }
   },
   getters: {

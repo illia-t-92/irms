@@ -1,15 +1,7 @@
 <template>
 <v-form v-model="isValid">
     <v-container>
-        <v-alert
-            class="mt-4"
-            :value="alert.display"
-            :type="alert.type"
-            transition="fade-transition"
-            dismissible
-            >
-            {{ alert.message }}
-        </v-alert>
+        <AlertBanner/>
     </v-container>
     <v-container d-flex justify-space-around>
     <v-card
@@ -55,64 +47,55 @@
 
 <script>
 import axios from 'axios'
+import AlertBanner from '@/components/AlertBanner'
 
 export default {
     name: 'Login',
+    components: {
+        AlertBanner
+    },
     data: ()=> ({
         username: null,
         password: null,
         isValid: true,
         submitted: false,
-        alert: {
-            display: false,
-            message: '',
-            type: 'error',
-        },
         usernameRule:[v => !!v || 'Username is required'],
         passwordRule:[v => !!v || 'Password is required'],
     }),
     methods: {
         async submit(isFormValid) {
-        this.submitted = true
-        this.errors = []
-        if (isFormValid){
-            axios.defaults.headers.common["Authorization"] = ""
-            localStorage.removeItem("token")
-            const formData = {
-                username: this.username,
-                password: this.password
-            }
-            await axios
-                .post("/api/v1/token/login/", formData)
-                .then(response => {
-                    const token = response.data.auth_token
-                    this.$store.commit('setToken', token)
-                    
-                    axios.defaults.headers.common["Authorization"] = "Token " + token
-                    localStorage.setItem("token", token)
-                    const toPath = this.$route.query.to || '/'
-                    this.$router.push(toPath)
-                })
-                .catch(error => {
-                    if (error.response) {
-                            this.alert={
-                                display: true,
-                                message: error.response.data.non_field_errors[0],
-                                type: 'error',
-                            }
-                    } else {                       
-                        console.log(JSON.stringify(error))
-                    }
-                })
-            }
+            this.submitted = true
+            this.errors = []
+            if (isFormValid){
+                axios.defaults.headers.common["Authorization"] = ""
+                localStorage.removeItem("token")
+                const formData = {
+                    username: this.username,
+                    password: this.password
+                }
+                await axios
+                    .post("/api/v1/token/login/", formData)
+                    .then(response => {
+                        const token = response.data.auth_token
+                        this.$store.commit('setToken', token)
+                        
+                        axios.defaults.headers.common["Authorization"] = "Token " + token
+                        localStorage.setItem("token", token)
+                        const toPath = this.$route.query.to || '/'
+                        this.$router.push(toPath)
+                    })
+                    .catch(error => {
+                        if (error.response) {
+                            this.$store.commit('showAlert', {
+                                alertType: 'error',
+                                alertMessages: error.response.data.non_field_errors 
+                            })
+                        } else {                       
+                            console.log(JSON.stringify(error))
+                        }
+                    })
+                }
         },
-    },
-    watch: {
-        alert(new_val){
-            if(new_val){
-                setTimeout(()=>{this.alert.display=false},2000)
-            }
-        }   
     },
 }
 </script>

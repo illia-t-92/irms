@@ -34,6 +34,7 @@ import { mapMutations } from 'vuex'
     },
     computed: {
       drawerState: {
+        get () { return this.$store.getters.drawerState },
         set (v) { return this.$store.commit('toggleDrawerState', v) }
       }
     }

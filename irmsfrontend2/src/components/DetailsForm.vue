@@ -1,16 +1,5 @@
 <template>
 <v-form v-model="valid">
-    <v-container>
-        <v-alert
-            class="mt-n16"
-            :value="alert.display"
-            :type="alert.type"
-            transition="fade-transition"
-            dismissible
-            >
-            {{ alert.message }}
-        </v-alert>
-    </v-container>
     <v-card
         class="mx-auto"
         color="white"
@@ -273,10 +262,14 @@
 import axios from 'axios'
 import { validationMixin } from 'vuelidate'
 import { required, maxLength, minLength, integer, decimal } from 'vuelidate/lib/validators'
+import AlertBanner from '@/components/AlertBanner'
 
 
  export default {
     mixins: [validationMixin],
+    components: {
+        AlertBanner
+    },
     props: {
         record_uuid: {
             type: String
@@ -301,11 +294,6 @@ import { required, maxLength, minLength, integer, decimal } from 'vuelidate/lib/
     },
     data: () => ({
         dateMenu: false,
-        alert: {
-            display: false,
-            message: '',
-            type: 'error',
-        },
         isEditing: false,
         valid: false, 
         item: {},
@@ -371,11 +359,10 @@ import { required, maxLength, minLength, integer, decimal } from 'vuelidate/lib/
         async submitForm(){
             this.$v.$touch()
             if (this.$v.$invalid) {
-                this.alert={
-                    display: true,
-                    message: 'Please, correct errors',
-                    type: 'warning'
-                }
+                this.$store.commit('showAlert', {
+                    alertType: 'warning',
+                    alertMessages: ['Please, correct errors']
+                })
             } else {
                 let payload=JSON.stringify(this.item)
                 await axios.put(`/api/v1/return-record/${this.record_uuid}/detail`, payload, 
@@ -387,20 +374,18 @@ import { required, maxLength, minLength, integer, decimal } from 'vuelidate/lib/
                 )
                 .then(response => {
                     this.isEditing=false
-                    this.alert={
-                        display: true,
-                        message: 'Data saved correctly',
-                        type: 'success',
-                    }
+                    this.$store.commit('showAlert', {
+                        alertType: 'success',
+                        alertMessages: ['Data saved correctly']
+                    })
                     
                 })
                 .catch(error =>{
                     console.log(error)
-                    this.alert={
-                    display: true,
-                    message: 'Something went wrong',
-                    type: 'error',
-                    }
+                    this.$store.commit('showAlert', {
+                        alertType: 'error',
+                        alertMessages: ['Something went wrong']
+                    })
                 })
             }
         },  
@@ -479,6 +464,7 @@ import { required, maxLength, minLength, integer, decimal } from 'vuelidate/lib/
         //but we need to populate the brands drop-down list
         this.loadBrandsList()
     },
+    /*
     watch: {
         //watch for alert message to fade
         alert(new_val){
@@ -486,7 +472,8 @@ import { required, maxLength, minLength, integer, decimal } from 'vuelidate/lib/
                 setTimeout(()=>{this.alert.display=false},2000)
             }
         }   
-  }
+    }
+    */
 }
 
 </script>

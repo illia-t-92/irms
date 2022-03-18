@@ -1,13 +1,14 @@
 <template>    
-    <v-container>
-        <v-alert
-            class="mt-n16"
+    <v-container >
+        <v-alert 
+            v-for="message in alert.messages"
+            :key="message"
+            class="mt-4"
             :value="alert.status"
             :type="alert.type"
             transition="fade-transition"
-            dismissible
             >
-            {{ alert.message }}
+            {{ message }}
         </v-alert>
     </v-container>
 </template>
@@ -16,14 +17,19 @@
 import { mapState, mapMutations } from 'vuex'
 
 export default {
+    computed: mapState ({
+        alert: 'alert',
+        }),
     methods: {
         ...mapMutations({
-            showAlert: 'showAlert',
             dismissAlert: 'dismissAlert'
-      }),
-    computed: mapState ({
-        alert: 'alert'
-    }),   
-    }
+        })
+    },
+    watch: {
+        //watch for alert message to fade
+        alert() {
+            setTimeout( this.dismissAlert, 2000)
+        }
+    }  
 }
 </script>
