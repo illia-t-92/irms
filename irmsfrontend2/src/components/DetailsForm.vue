@@ -344,7 +344,7 @@ import { required, maxLength, minLength, integer, decimal } from 'vuelidate/lib/
         },
         async loadBrandsList(){
             
-            await axios.get('/api/v1/brands/')
+            await axios.get('/api/v1/brands-short/')
             .then(response =>{
                 this.brands=response.data
             })
