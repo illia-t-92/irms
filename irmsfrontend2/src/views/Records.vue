@@ -1,28 +1,5 @@
 <template>
     <div>
-        <!--
-        <div class="d-flex justify-end ma-4">
-            <v-tooltip left>
-                <template v-slot:activator="{ on, attrs }">
-                    <v-btn
-                    fixed 
-                    middle
-                    class="mx-2"
-                    fab
-                    dark
-                    color="indigo"
-                    v-bind="attrs"
-                    v-on="on"
-                    >
-                    <v-icon dark>
-                        mdi-plus
-                    </v-icon>
-                    </v-btn>
-                </template>
-                <span>Add manual return</span>
-            </v-tooltip>
-        </div>
-        -->
         <v-data-table
             :headers="headers"
             :items="records"
@@ -33,16 +10,7 @@
             class="elevation-1"
     >
     <template v-slot:item.status="{ item }">
-      <v-chip
-        
-        :color="getStatusFormat(item.status).color"
-        :text-color="getStatusFormat(item.status).text_color"
-      >
-        <v-icon class="mr-2">
-          {{ getStatusFormat(item.status).icon }}
-          </v-icon>
-        {{ item.status_verbose }}
-      </v-chip>
+        <StatusChip :item="item" />
     </template>
     <template v-slot:item.details="{ item }">
         <v-btn
@@ -53,7 +21,6 @@
         >
             View details
         </v-btn>
-
     </template>
     </v-data-table>
     </div>
@@ -61,8 +28,12 @@
 
 <script>
 import axios from 'axios'
+import StatusChip from '@/components/StatusChip'
 
 export default {
+    components: {
+        StatusChip
+    },
     data() {
         return {
             headers: [
@@ -127,38 +98,6 @@ export default {
             .catch(error =>{
                 console.log(error)
             })
-        },
-        getStatusFormat (status) {
-            if (status === 'NEW') return {
-                color :'indigo',
-                text_color : 'white',
-                icon: 'mdi-plus-circle-outline'
-            }
-            else if (status === 'OK') return {
-                color: 'green',
-                text_color: 'white',
-                icon: 'mdi-check'
-                }
-            else if (status === 'CHECK') return {
-                color: 'red',
-                text_color: 'white',
-                icon: 'mdi-alert-octagon' 
-                }
-            else if (status === 'PAID') return {
-                color: 'grey',
-                text_color: 'black',
-                icon: 'mdi-check-all' 
-                }
-            else if (status === 'REVIEW') return {
-                color: 'yellow', 
-                text_color: 'black',
-                icon: 'mdi-account-search-outline'
-                }
-            else if (status === 'BLOCK') return {
-                color: 'black',
-                text_color: 'white',
-                icon: 'mdi-close-octagon'
-                }
         },
     }
 }

@@ -262,14 +262,10 @@
 import axios from 'axios'
 import { validationMixin } from 'vuelidate'
 import { required, maxLength, minLength, integer, decimal } from 'vuelidate/lib/validators'
-import AlertBanner from '@/components/AlertBanner'
 
 
  export default {
     mixins: [validationMixin],
-    components: {
-        AlertBanner
-    },
     props: {
         record_uuid: {
             type: String
@@ -456,7 +452,6 @@ import AlertBanner from '@/components/AlertBanner'
         //for creating new records we do not need to make initial call to the API
         if (!this.addingRecord) {
                 this.loadRecordFromAPI()
-
             }
         else {
             this.isEditing=true
@@ -464,16 +459,6 @@ import AlertBanner from '@/components/AlertBanner'
         //but we need to populate the brands drop-down list
         this.loadBrandsList()
     },
-    /*
-    watch: {
-        //watch for alert message to fade
-        alert(new_val){
-            if(new_val){
-                setTimeout(()=>{this.alert.display=false},2000)
-            }
-        }   
-    }
-    */
 }
 
 </script>
