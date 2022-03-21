@@ -13,14 +13,7 @@
         <StatusChip :item="item" />
     </template>
     <template v-slot:item.details="{ item }">
-        <v-btn
-            tile
-            outlined
-            color="success"
-            :to="{ name: 'record_details', params: { record_uuid: item.uuid }}"
-        >
-            View details
-        </v-btn>
+        <DetailsButton :item="item"/>
     </template>
     </v-data-table>
     </div>
@@ -29,10 +22,12 @@
 <script>
 import axios from 'axios'
 import StatusChip from '@/components/StatusChip'
+import DetailsButton from '@/components/DetailsButton'
 
 export default {
     components: {
-        StatusChip
+        StatusChip,
+        DetailsButton
     },
     data() {
         return {
