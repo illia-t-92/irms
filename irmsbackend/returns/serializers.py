@@ -1,10 +1,10 @@
 from rest_framework import serializers
 from .models import ReturnRecord
 from brands.models import Brand
-from brands.serializers import BrandSerializer
+from brands.serializers import BrandShortSerializer
 
 class ReturnRecordSerializer(serializers.ModelSerializer):
-    brand=BrandSerializer()
+    brand=BrandShortSerializer()
     status_verbose=serializers.CharField(source='get_status_display')
 
     class Meta:
