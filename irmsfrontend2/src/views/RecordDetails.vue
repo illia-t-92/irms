@@ -1,7 +1,6 @@
 <template>
     <DetailsForm
         :addingRecord="false"
-        :record_uuid="record_uuid"
     />
 </template>
 

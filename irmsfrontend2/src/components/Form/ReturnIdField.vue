@@ -1,8 +1,4 @@
 <template>
-    <v-col
-        class="d-flex"
-        cols="4"
-    >
     <v-text-field
         v-model="return_id"
         label="Return ID"
@@ -11,7 +7,6 @@
         @input="$v.return_id.$touch()"
         @blur="$v.return_id.$touch()"
     ></v-text-field>
-    </v-col>
 </template>
 
 <script>
@@ -24,9 +19,7 @@ export default {
         addingRecord: Boolean,
     },
     validations: {
-        item: {
-            return_id: { required, integer },
-        }
+        return_id: { required, integer },
     },
     data: () => ({
     }),
@@ -36,10 +29,10 @@ export default {
                 return this.$store.state.form.item.return_id
             },
             set (value) {
-                this.$store.commit('form/changeFieldValue', 'return_id', value)
+                let payload = { field: 'return_id', value: value}
+                this.$store.commit('form/changeFieldValue', payload)
             }
         },
-        /*
         returnIDErrors () {
             const errors = []
             if (!this.$v.return_id.$dirty) return errors
@@ -47,7 +40,6 @@ export default {
             !this.$v.return_id.integer && errors.push('Return ID must be a number.')
             return errors
         },
-        */
     }
 }
 </script>

@@ -45,7 +45,8 @@ export default {
                 return this.$store.state.form.item.brand
             },
             set (value) {
-                this.$store.commit('form/changeFieldValue', 'brand', value)
+                let payload = { field: 'brand', value: value}
+                this.$store.commit('form/changeFieldValue', payload)
             }
         },
     },

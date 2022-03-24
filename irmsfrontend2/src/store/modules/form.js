@@ -1,7 +1,8 @@
 import axios from 'axios'
 import router from '@/router'
 
-const state = () => ({
+const getDefaultState = () => {
+  return {
     item: {
       return_id: '',
       operation_date: '',
@@ -16,16 +17,21 @@ const state = () => ({
       comments: '',
       brand: '',
     }
-})
+  }
+}
+
+const state = getDefaultState()
   
 const mutations= {
-  changeFieldValue (state, {field, value}) {
-    state.item[field] = value
+  changeFieldValue (state, payload) {
+    state.item[payload.field] = payload.value
   },
   loadItem (state, value) {
     state.item = value
-  }
-    
+  },
+  resetState (state) {
+    Object.assign(state, getDefaultState())
+  },
 }
 
 const getters = {
@@ -37,11 +43,14 @@ const actions = {
       return axios.get(`/api/v1/return-record/${router.currentRoute.params.record_uuid}/detail`)
         .then(response =>{
             commit('loadItem', response.data)
-            console.log(response)
+
         })
         .catch(error =>{
             console.log(error)
         })
+    },
+    async saveData ({ commit }) {
+
     }
 }
 
