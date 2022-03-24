@@ -1,5 +1,5 @@
 <template>
-<v-form v-model="valid">
+
     <v-card
         class="mx-auto"
         color="white"
@@ -10,6 +10,8 @@
                 :disabled="!isEditing && !addingRecord"
                 @submit.prevent="submit"
             >
+            <FormBrandsField :item="item" :addingRecord="addingRecord"/>
+            <!--
                 <v-row align="center">
                     <v-col
                         class="d-flex"
@@ -26,11 +28,15 @@
                         ></v-select>
                     </v-col>
                 </v-row>
+                -->
                 <v-row align="center">
+                    
                     <v-col
                         class="d-flex"
                         cols="4"
                     >
+                    <FormReturnIdField :addingRecord="addingRecord"/>
+                    <!--
                     <v-text-field
                         v-model="item.return_id"
                         label="Return ID"
@@ -39,6 +45,7 @@
                         @input="$v.item.return_id.$touch()"
                         @blur="$v.item.return_id.$touch()"
                     ></v-text-field>
+                    -->
                     </v-col>
 
                     <v-col
@@ -254,7 +261,6 @@
             </v-form>
         </v-container>
     </v-card>
-  </v-form>
  
 </template>
 
@@ -262,10 +268,16 @@
 import axios from 'axios'
 import { validationMixin } from 'vuelidate'
 import { required, maxLength, minLength, integer, decimal } from 'vuelidate/lib/validators'
+import FormBrandsField from '@/components/FormBrandsField'
+import FormReturnIdField from '@/components/FormReturnIdField'
 
 
  export default {
     mixins: [validationMixin],
+    components: {
+        FormBrandsField,
+        FormReturnIdField,
+    },
     props: {
         record_uuid: {
             type: String
@@ -277,7 +289,7 @@ import { required, maxLength, minLength, integer, decimal } from 'vuelidate/lib/
         },
     validations: {
         item: {
-            return_id: { required, integer },
+            //return_id: { required, integer },
             order_id: { required, integer },
             operation_date: { required },
             customer_name: { required },
@@ -342,6 +354,7 @@ import { required, maxLength, minLength, integer, decimal } from 'vuelidate/lib/
             })
             
         },
+        /*
         async loadBrandsList(){
             
             await axios.get('/api/v1/brands-short/')
@@ -352,10 +365,11 @@ import { required, maxLength, minLength, integer, decimal } from 'vuelidate/lib/
                 console.log(error)
             })
         },
+        */
         async submitForm(){
             this.$v.$touch()
             if (this.$v.$invalid) {
-                this.$store.commit('showAlert', {
+                this.$store.commit('alert/showAlert', {
                     alertType: 'warning',
                     alertMessages: ['Please, correct errors']
                 })
@@ -370,7 +384,7 @@ import { required, maxLength, minLength, integer, decimal } from 'vuelidate/lib/
                 )
                 .then(response => {
                     this.isEditing=false
-                    this.$store.commit('showAlert', {
+                    this.$store.commit('alert/showAlert', {
                         alertType: 'success',
                         alertMessages: ['Data saved correctly']
                     })
@@ -378,7 +392,7 @@ import { required, maxLength, minLength, integer, decimal } from 'vuelidate/lib/
                 })
                 .catch(error =>{
                     console.log(error)
-                    this.$store.commit('showAlert', {
+                    this.$store.commit('alert/showAlert', {
                         alertType: 'error',
                         alertMessages: ['Something went wrong']
                     })
@@ -387,6 +401,7 @@ import { required, maxLength, minLength, integer, decimal } from 'vuelidate/lib/
         },  
     },
     computed: {
+      /*
       returnIDErrors () {
         const errors = []
         if (!this.$v.item.return_id.$dirty) return errors
@@ -394,6 +409,7 @@ import { required, maxLength, minLength, integer, decimal } from 'vuelidate/lib/
         !this.$v.item.return_id.integer && errors.push('Return ID must be a number.')
         return errors
         },
+    */
         orderIDErrors () {
         const errors = []
         if (!this.$v.item.order_id.$dirty) return errors
@@ -448,16 +464,18 @@ import { required, maxLength, minLength, integer, decimal } from 'vuelidate/lib/
         },
     },
     created () {
+        
         document.title='Record detail' + '| Returns manager'
         //for creating new records we do not need to make initial call to the API
         if (!this.addingRecord) {
-                this.loadRecordFromAPI()
+                //this.loadRecordFromAPI()
+                this.$store.dispatch('form/loadRecordFromAPI')
             }
         else {
             this.isEditing=true
         }
         //but we need to populate the brands drop-down list
-        this.loadBrandsList()
+        //this.loadBrandsList()
     },
 }
 

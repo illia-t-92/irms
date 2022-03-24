@@ -86,7 +86,7 @@ export default {
                     })
                     .catch(error => {
                         if (error.response) {
-                            this.$store.commit('showAlert', {
+                            this.$store.commit('alert/showAlert', {
                                 alertType: 'error',
                                 alertMessages: error.response.data.non_field_errors 
                             })

@@ -26,16 +26,11 @@ class ReturnRecordSerializer(serializers.ModelSerializer):
             'get_absolute_url',
             'brand',
         )
-        '''
         read_only_fields=[
             'uuid',
-            'sender_bank_code',
-            'sender_company_name',
-            'sender_bank_account',
             'status_verbose',
             'get_absolute_url',
         ]
-        '''
 
     def create(self, validated_data):
         brand_data = validated_data.pop('brand')

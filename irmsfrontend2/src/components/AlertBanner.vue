@@ -17,12 +17,14 @@
 import { mapState, mapMutations } from 'vuex'
 
 export default {
-    computed: mapState ({
-        alert: 'alert',
-        }),
+    computed: {
+          ...mapState('alert', {
+            alert: state => state.alert,
+        })
+    },
     methods: {
         ...mapMutations({
-            dismissAlert: 'dismissAlert'
+            dismissAlert: 'alert/dismissAlert'
         })
     },
     watch: {

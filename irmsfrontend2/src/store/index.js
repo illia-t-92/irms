@@ -1,18 +1,20 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import alert from './modules/alert'
+import form from './modules/form'
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
+  strict: true,
+  modules: {
+    alert,
+    form
+  },
   state: {
     isAuthenticated: false,
     token: '',
     drawerState: false,
-    alert: {
-      status: false,
-      type: '',
-      messages: '',
-    },
   },
   mutations: {
     initializeStore(state){
@@ -35,22 +37,10 @@ export default new Vuex.Store({
     toggleDrawerState (state, data) {
       state.drawerState = data 
     },
-    showAlert (state, data) {
-      state.alert = {
-        status: true,
-        type: data.alertType,
-        messages: data.alertMessages
-      }
-    },
-    dismissAlert (state) {
-      state.alert.status=false
-    }
   },
   getters: {
     drawerState: (state) => state.drawerState
   },
   actions: {
-  },
-  modules: {
   }
 })
