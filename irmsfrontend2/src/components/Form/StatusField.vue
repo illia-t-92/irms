@@ -14,9 +14,11 @@
 <script>
 
 export default {
+    /*
     props: {
         addingRecord: Boolean,
     },
+    */
 data: () => ({
         statusChoices: [
                 {
@@ -56,6 +58,9 @@ data: () => ({
             set (value) {
                 let payload = { field: 'status', value: value}
                 this.$store.commit('form/changeFieldValue', payload)
+            },
+        addingRecord () {
+            return this.$store.state.form.addingRecord
             }
         },
     },

@@ -9,40 +9,40 @@
                 :disabled="!isEditing && !addingRecord"
                 @submit.prevent="submit"
             >
-            <BrandsField :addingRecord="addingRecord"/>
+                <BrandsField/>
                 <v-row align="center">
                     <v-col class="d-flex" cols="4">
-                        <ReturnIdField :addingRecord="addingRecord"/>
+                        <ReturnIdField/>
                     </v-col>
                     <v-col class="d-flex" cols="4">
-                        <OrderIdField :addingRecord="addingRecord"/>
+                        <OrderIdField/>
                     </v-col>
                     <v-col class="d-flex" cols="4">
-                        <DateField :addingRecord="addingRecord" />
+                        <DateField />
                     </v-col>
                 </v-row>
                 <v-row align="center">
                     <v-col class="d-flex" cols="4">
-                        <CustomerNameField :addingRecord="addingRecord"/>
+                        <CustomerNameField />
                     </v-col>
                     <v-col class="d-flex" cols="4">
-                        <CustomerSurnameField :addingRecord="addingRecord"/>
+                        <CustomerSurnameField />
                     </v-col>
                     <v-col class="d-flex" cols="4">
-                        <CustomerIDfield :addingRecord="addingRecord"/>
+                        <CustomerIDfield />
                     </v-col>
                 </v-row>
                 <v-row align="center">
                     <v-col class="d-flex" cols="8">
-                        <CustomerAccountField :addingRecord="addingRecord"/>
+                        <CustomerAccountField />
                     </v-col>
                     <v-col class="d-flex" cols="4">
-                        <AmountField :addingRecord="addingRecord"/>
+                        <AmountField />
                     </v-col>
                 </v-row>
                 <v-row align="center">
                     <v-col class="d-flex" cols="12">
-                        <PaymentDetailsField :addingRecord="addingRecord"/>
+                        <PaymentDetailsField />
                     </v-col>
                 </v-row>
                 <v-row align="center">
@@ -52,50 +52,27 @@
                 </v-row>
                 <v-row align="center">
                     <v-col class="d-flex" cols="12">
-                        <CommentsField :addingRecord="addingRecord"/>
+                        <CommentsField />
                     </v-col>
                 </v-row>
                 <v-row>
-                <div v-if="!isEditing && !addingRecord">
-                        <v-btn
-                            class="ml-2 mb-2"
-                            color="warning"
-                            @click="isEditing=true"
-                        >
-                        <v-icon left>
-                            mdi-pencil
-                        </v-icon>
-                        Edit
+                    <div v-if="!isEditing && !addingRecord">
+                        <v-btn class="ml-2 mb-2" color="warning" @click="isEditing=true">
+                        <v-icon left> mdi-pencil </v-icon>
+                            Edit
                         </v-btn>
-                        <v-btn 
-                            class="ml-2 mb-2" 
-                            @click="returnToList()"
-                        >
-                        <v-icon left>
-                            mdi-arrow-left
-                        </v-icon>
+                        <v-btn class="ml-2 mb-2" @click="returnToList()">
+                        <v-icon left> mdi-arrow-left </v-icon>
                             Back
                         </v-btn>
                     </div>
                     <div v-else>
-                        <v-btn
-                            class="ml-2 mb-2"
-                            color="success"
-                            @click="submitForm()"
-                        >
-                        <v-icon left>
-                            mdi-check
-                        </v-icon>
-                        Save
+                        <v-btn class="ml-2 mb-2" color="success" @click="submitForm()">
+                        <v-icon left> mdi-check</v-icon>
+                            Save
                         </v-btn>
-                        <v-btn 
-                            class="ml-2 mb-2"
-                            color="error" 
-                            @click="cancelEdit()"
-                        >
-                        <v-icon left>
-                            mdi-cancel
-                        </v-icon>
+                        <v-btn class="ml-2 mb-2" color="error" @click="cancelEdit()">
+                        <v-icon left> mdi-cancel</v-icon>
                             Cancel
                         </v-btn>
                     </div>
@@ -103,7 +80,6 @@
             </v-form>
         </v-container>
     </v-card>
- 
 </template>
 
 <script>
@@ -139,12 +115,14 @@ import CommentsField from '@/components/Form/CommentsField'
         CommentsField,
         DateField
     },
+    /*
     props: {
         addingRecord: { 
             type: Boolean,
             required: true
          },
         },
+    */
     data: () => ({
         isEditing: false,
     }),
@@ -157,10 +135,11 @@ import CommentsField from '@/components/Form/CommentsField'
             }
         },
         returnToList() {
-                this.$router.go(-1)
-            },
+            this.$router.go(-1)
+        },
         async submitForm(){
-            //this.$v.$touch()
+            this.$store.dispatch('form/saveData')
+            /*this.$v.$touch()
             if (this.$v.$invalid) {
                 this.$store.commit('alert/showAlert', {
                     alertType: 'warning',
@@ -190,13 +169,15 @@ import CommentsField from '@/components/Form/CommentsField'
                         alertMessages: ['Something went wrong']
                     })
                 })
-            }
+            }*/
         },  
     },
     computed: {
+        addingRecord () {
+            return this.$store.state.form.addingRecord
+            }
     },
     created () {
-        
         document.title='Record detail' + '| Returns manager'
         //for creating new records we do not need to make initial call to the API
         if (!this.addingRecord) {

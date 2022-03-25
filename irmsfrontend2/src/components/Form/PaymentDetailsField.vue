@@ -19,9 +19,11 @@ import { required } from 'vuelidate/lib/validators'
 
 export default {
     mixins: [validationMixin],
+    /*
     props: {
         addingRecord: Boolean,
     },
+    */
     validations: {
         payment_details: { required },
     },
@@ -35,6 +37,9 @@ export default {
             set (value) {
                 let payload = { field: 'payment_details', value: value}
                 this.$store.commit('form/changeFieldValue', payload)
+            },
+        addingRecord () {
+            return this.$store.state.form.addingRecord
             }
         },
         paymentDetailsErrors () {

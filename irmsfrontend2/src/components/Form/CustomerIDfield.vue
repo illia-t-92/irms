@@ -15,9 +15,11 @@ import { required } from 'vuelidate/lib/validators'
 
 export default {
     mixins: [validationMixin],
+    /*
     props: {
         addingRecord: Boolean,
     },
+    */
     validations: {
         customer_PID: { required },
     },
@@ -31,7 +33,10 @@ export default {
             set (value) {
                 let payload = { field: 'customer_PID', value: value}
                 this.$store.commit('form/changeFieldValue', payload)
-            }
+            },
+        addingRecord () {
+            return this.$store.state.form.addingRecord
+        }
         },
         customerPIDErrors () {
             const errors = []

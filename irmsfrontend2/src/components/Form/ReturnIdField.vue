@@ -15,9 +15,11 @@ import { required, integer} from 'vuelidate/lib/validators'
 
 export default {
     mixins: [validationMixin],
+    /*
     props: {
         addingRecord: Boolean,
     },
+    */
     validations: {
         return_id: { required, integer },
     },
@@ -31,6 +33,9 @@ export default {
             set (value) {
                 let payload = { field: 'return_id', value: value}
                 this.$store.commit('form/changeFieldValue', payload)
+            },
+        addingRecord () {
+            return this.$store.state.form.addingRecord
             }
         },
         returnIDErrors () {

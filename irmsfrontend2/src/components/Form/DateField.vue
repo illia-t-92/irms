@@ -34,9 +34,11 @@ import moment from 'moment'
 
 export default {
     mixins: [validationMixin],
+    /*
     props: {
         addingRecord: Boolean,
     },
+    */
     validations: {
         operation_date: { required },
     },
@@ -59,6 +61,9 @@ export default {
             set (value) {
                 let payload = { field: 'operation_date', value: value}
                 this.$store.commit('form/changeFieldValue', payload)
+            },
+        addingRecord () {
+            return this.store.state.form.addingRecord
             }
         },
         operationDateErrors () {

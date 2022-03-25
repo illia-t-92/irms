@@ -11,9 +11,11 @@
 <script>
 
 export default {
+    /*
     props: {
         addingRecord: Boolean,
     },
+    */
     data: () => ({
     }),
     computed: {
@@ -24,6 +26,9 @@ export default {
             set (value) {
                 let payload = { field: 'comments', value: value}
                 this.$store.commit('form/changeFieldValue', payload)
+            },
+        addingRecord () {
+            return this.$store.state.form.addingRecord
             }
         },
     }

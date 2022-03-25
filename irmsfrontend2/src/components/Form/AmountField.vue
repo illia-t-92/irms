@@ -15,9 +15,11 @@ import { required, decimal } from 'vuelidate/lib/validators'
 
 export default {
     mixins: [validationMixin],
+    /*
     props: {
         addingRecord: Boolean,
     },
+    */
     validations: {
         amount: { required, decimal },
     },
@@ -31,13 +33,16 @@ export default {
             set (value) {
                 let payload = { field: 'amount', value: value}
                 this.$store.commit('form/changeFieldValue', payload)
+            },
+            addingRecord () {
+                return this.$store.state.form.addingRecord
             }
         },
         amountErrors () {
         const errors = []
         if (!this.$v.amount.$dirty) return errors
-            !this.$v.amount.required && errors.push('Please, enter return amount.')
-            !this.$v.amount.decimal && errors.push('Amount must be a number.')
+        !this.$v.amount.required && errors.push('Please, enter return amount.') && this.$store.commit('form/validate', false)
+        !this.$v.amount.decimal && errors.push('Amount must be a number.') && this.$store.commit('form/validate', false)
         return errors
         },
     }

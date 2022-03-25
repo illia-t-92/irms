@@ -15,9 +15,11 @@ import { required, maxLength, minLength } from 'vuelidate/lib/validators'
 
 export default {
     mixins: [validationMixin],
+    /*
     props: {
         addingRecord: Boolean,
     },
+    */
     validations: {
         customer_account: { required, minLength: minLength(20), maxLength: maxLength(32) },
     },
@@ -31,6 +33,9 @@ export default {
             set (value) {
                 let payload = { field: 'customer_account', value: value}
                 this.$store.commit('form/changeFieldValue', payload)
+            },
+        addingRecord () {
+            return this.$store.state.form.addingRecord
             }
         },
         customerAccountErrors () {

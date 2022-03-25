@@ -21,15 +21,16 @@
 import axios from 'axios'
 
 export default {
+    /*
     props: {
         addingRecord: Boolean,
     },
+    */
     data: () => ({
-        brands: []
+        brands: [],
     }),
     methods: {
         async loadBrandsList(){
-            
             await axios.get('/api/v1/brands-short/')
             .then(response =>{
                 this.brands=response.data
@@ -47,8 +48,11 @@ export default {
             set (value) {
                 let payload = { field: 'brand', value: value}
                 this.$store.commit('form/changeFieldValue', payload)
+            },
+        },   
+        addingRecord () {
+            return this.$store.state.form.addingRecord
             }
-        },
     },
     created () {
         this.loadBrandsList()
