@@ -12,6 +12,9 @@
             label="Brand"
             :readonly="!addingRecord"
             :disabled="!addingRecord"
+            :error-messages="brandErrors"
+            @input="v$.brand.$touch()"
+            @blur="v$.brand.$touch()"
             ></v-select>
         </v-col>
     </v-row>
@@ -19,13 +22,16 @@
 
 <script>
 import axios from 'axios'
+import useVuelidate from '@vuelidate/core'
+import { required } from '@vuelidate/validators'
 
 export default {
-    /*
-    props: {
-        addingRecord: Boolean,
+    validations () {
+        return {
+            brand: { required },
+        }
     },
-    */
+    setup: () => ({ v$: useVuelidate() }),
     data: () => ({
         brands: [],
     }),
@@ -52,7 +58,10 @@ export default {
         },   
         addingRecord () {
             return this.$store.state.form.addingRecord
-            }
+        },
+        brandErrors () {
+            return this.v$.brand.$errors.map(obj => obj.$message)
+        },
     },
     created () {
         this.loadBrandsList()

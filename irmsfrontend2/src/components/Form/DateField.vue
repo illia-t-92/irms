@@ -2,7 +2,6 @@
     <v-menu
         v-model="dateMenu"
         :close-on-content-click="false"
-        
         :nudge-right="40"
         transition="scale-transition"
         offset-y
@@ -14,6 +13,9 @@
                 label="Operation date"
                 prepend-icon="mdi-calendar"
                 readonly
+                :error-messages="operationDateErrors"
+                @input="v$.operation_date.$touch()"
+                @blur="v$.operation_date.$touch()"
                 v-bind="attrs"
                 v-on="on"
             ></v-text-field>
@@ -28,20 +30,17 @@
 </template>
 
 <script>
-import { validationMixin } from 'vuelidate'
-import { required } from 'vuelidate/lib/validators'
+import useVuelidate from '@vuelidate/core'
+import { required } from '@vuelidate/validators'
 import moment from 'moment'
 
 export default {
-    mixins: [validationMixin],
-    /*
-    props: {
-        addingRecord: Boolean,
+    validations () {
+        return {
+            operation_date: { required },
+        }
     },
-    */
-    validations: {
-        operation_date: { required },
-    },
+    setup: () => ({ v$: useVuelidate() }),
     data: () => ({
         dateMenu: false
     }),
@@ -67,10 +66,7 @@ export default {
             }
         },
         operationDateErrors () {
-            const errors = []
-                if (!this.$v.operation_date.$dirty) return errors
-                !this.$v.operation_date.required && errors.push('Operation date is required.')
-            return errors
+            return this.v$.operation_date.$errors.map(obj => obj.$message)
         },
     }
 }

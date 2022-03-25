@@ -4,27 +4,22 @@
         label="Return ID"
         required
         :error-messages="returnIDErrors"
-        @input="$v.return_id.$touch()"
-        @blur="$v.return_id.$touch()"
+        @input="v$.return_id.$touch()"
+        @blur="v$.return_id.$touch()"
     ></v-text-field>
 </template>
 
 <script>
-import { validationMixin } from 'vuelidate'
-import { required, integer} from 'vuelidate/lib/validators'
+import useVuelidate from '@vuelidate/core'
+import { required, integer} from '@vuelidate/validators'
 
 export default {
-    mixins: [validationMixin],
-    /*
-    props: {
-        addingRecord: Boolean,
+    validations () {
+        return {
+            return_id: { required, integer },
+        }
     },
-    */
-    validations: {
-        return_id: { required, integer },
-    },
-    data: () => ({
-    }),
+    setup: () => ({ v$: useVuelidate() }),
     computed: {
         return_id: {
             get () {
@@ -38,13 +33,11 @@ export default {
             return this.$store.state.form.addingRecord
             }
         },
+
         returnIDErrors () {
-            const errors = []
-            if (!this.$v.return_id.$dirty) return errors
-            !this.$v.return_id.required && errors.push('Return ID is required.')
-            !this.$v.return_id.integer && errors.push('Return ID must be a number.')
-            return errors
+            return this.v$.return_id.$errors.map(obj => obj.$message)
         },
+
     }
 }
 </script>

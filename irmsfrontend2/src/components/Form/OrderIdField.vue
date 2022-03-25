@@ -4,27 +4,23 @@
         label="Order ID"
         required
         :error-messages="orderIDErrors"
-        @input="$v.order_id.$touch()"
-        @blur="$v.order_id.$touch()"
-    ></v-text-field>
+        @blur="v$.order_id.$touch()"
+        @input="v$.order_id.$touch()"
+    >
+    </v-text-field>
 </template>
 
 <script>
-import { validationMixin } from 'vuelidate'
-import { required, integer} from 'vuelidate/lib/validators'
+import useVuelidate from '@vuelidate/core'
+import { required, integer} from '@vuelidate/validators'
 
 export default {
-    mixins: [validationMixin],
-    /*
-    props: {
-        addingRecord: Boolean,
+    validations () {
+        return {
+            order_id: { required, integer },
+        }
     },
-    */
-    validations: {
-        order_id: { required, integer },
-    },
-    data: () => ({
-    }),
+    setup: () => ({ v$: useVuelidate() }),
     computed: {
         order_id: {
             get () {
@@ -39,11 +35,7 @@ export default {
             }
         },
         orderIDErrors () {
-            const errors = []
-            if (!this.$v.order_id.$dirty) return errors
-            !this.$v.order_id.required && errors.push('Order ID is required.')
-            !this.$v.order_id.integer && errors.push('Order ID must be a number.')
-            return errors
+            return this.v$.order_id.$errors.map(obj => obj.$message)
         },
     }
 }

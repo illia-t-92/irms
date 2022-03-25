@@ -1,16 +1,16 @@
 <template>
-  <v-main>
+  <div>
       <NavigationDrawer/>
       <AppBar/>
       <AlertBanner/>
-        <v-main fluid>
-          <router-view></router-view>
-        </v-main>
-        <!--
-        <v-footer padless>
-        </v-footer>
-        -->
-  </v-main>
+      <v-main fluid>
+        <router-view></router-view>
+      </v-main>
+      <!--
+      <v-footer padless>
+      </v-footer>
+      -->
+  </div>
 </template>
 
 <script>

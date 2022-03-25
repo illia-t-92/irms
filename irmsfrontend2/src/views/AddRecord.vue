@@ -8,7 +8,7 @@ import DetailsForm from "../components/DetailsForm";
 
 export default {
     components: { DetailsForm },
-    mounted() {
+    beforeCreate() {
         this.$store.commit('form/setAddingRecord', true)
     }
 }

@@ -4,7 +4,6 @@ import router from '@/router'
 const getDefaultState = () => {
   return {
     addingRecord: false,
-    isValid: false,
     item: {
       return_id: '',
       operation_date: '',
@@ -34,9 +33,6 @@ const mutations= {
   resetState (state) {
     Object.assign(state, getDefaultState())
   },
-  validate (state, status ) {
-    state.isValid = status
-  },
   setAddingRecord (state, value) {
     state.addingRecord = value
   }
@@ -60,29 +56,31 @@ const actions = {
     },
     async saveData ({ commit, dispatch }) {
       let payload = JSON.stringify(state.item)
-      record_uuid = router.currentRoute.params.record_uuid
-      await axios.put(`/api/v1/return-record/${record_uuid}/detail`, payload , 
-                    {
-                        headers: {
-                            'Content-Type': 'application/json'
-                        }
-                    }
-                )
-                .then(() => {
-                    store.commit('alert/showAlert', {
-                        alertType: 'success',
-                        alertMessages: ['Data saved correctly']
-                    })
-                    
-                })
-                .catch(error =>{
-                    console.log(error)
-                      store.commit('alert/showAlert', {
-                        alertType: 'error',
-                        alertMessages: ['Something went wrong']
-                    })
-                })
+      if (!state.addingRecord) {
+        let record_uuid = router.currentRoute.params.record_uuid
+        await axios.put(`/api/v1/return-record/${record_uuid}/detail`, payload , 
+          {
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          }
+        ).then(() => {
+            commit('alert/showAlert', {
+              alertType: 'success',
+              alertMessages: ['Data saved correctly']
+            }, {root:true})      
+          }).catch(error =>{
+                console.log(error)
+                commit('alert/showAlert', {
+                  alertType: 'error',
+                  alertMessages: ['Something went wrong']
+                }, {root:true})
+              })
         dispatch('loadRecordFromAPI')
+      } else {
+
+      }
+      
     }
 }
 

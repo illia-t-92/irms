@@ -1,7 +1,7 @@
 <template>
     <v-navigation-drawer
+        app
         v-model="drawerState"
-        absolute
         temporary
       >
         <MenuList/>

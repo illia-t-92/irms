@@ -85,6 +85,7 @@
 <script>
 import axios from 'axios'
 import { validationMixin } from 'vuelidate'
+import { useVuelidate } from '@vuelidate/core'
 import BrandsField from '@/components/Form/BrandsField'
 import ReturnIdField from '@/components/Form/ReturnIdField'
 import OrderIdField from '@/components/Form/OrderIdField'
@@ -115,6 +116,7 @@ import CommentsField from '@/components/Form/CommentsField'
         CommentsField,
         DateField
     },
+    setup: () => ({ v$: useVuelidate() }),
     /*
     props: {
         addingRecord: { 
@@ -138,14 +140,17 @@ import CommentsField from '@/components/Form/CommentsField'
             this.$router.go(-1)
         },
         async submitForm(){
-            this.$store.dispatch('form/saveData')
-            /*this.$v.$touch()
-            if (this.$v.$invalid) {
+            //this.$store.dispatch('form/saveData')
+            this.v$.$touch()
+            if (this.v$.$invalid) {
                 this.$store.commit('alert/showAlert', {
                     alertType: 'warning',
                     alertMessages: ['Please, correct errors']
                 })
             } else {
+                this.$store.dispatch('form/saveData')
+                this.isEditing = false
+                /*
                 //let payload=JSON.stringify(this.item)
                 await axios.put(`/api/v1/return-record/${this.record_uuid}/detail`, payload, 
                     {
@@ -169,7 +174,8 @@ import CommentsField from '@/components/Form/CommentsField'
                         alertMessages: ['Something went wrong']
                     })
                 })
-            }*/
+                */
+            }
         },  
     },
     computed: {
@@ -179,10 +185,10 @@ import CommentsField from '@/components/Form/CommentsField'
     },
     created () {
         document.title='Record detail' + '| Returns manager'
-        //for creating new records we do not need to make initial call to the API
         if (!this.addingRecord) {
                 this.$store.dispatch('form/loadRecordFromAPI')
             }
+        //for creating new records we do not need to make initial call to the API
         else {
             this.isEditing=true
         }

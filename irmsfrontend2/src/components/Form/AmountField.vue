@@ -4,27 +4,25 @@
         label="Amount"
         required
         :error-messages="amountErrors"
-        @input="$v.amount.$touch()"
-        @blur="$v.amount.$touch()"
+        @input="v$.amount.$touch()"
+        @blur="v$.amount.$touch()"
     ></v-text-field>
+    <!--
+        
+    -->
 </template>
 
 <script>
-import { validationMixin } from 'vuelidate'
-import { required, decimal } from 'vuelidate/lib/validators'
+import { required, decimal } from '@vuelidate/validators'
+import useVuelidate from '@vuelidate/core'
 
 export default {
-    mixins: [validationMixin],
-    /*
-    props: {
-        addingRecord: Boolean,
+    setup: () => ({ v$: useVuelidate() }),
+    validations () {
+        return {
+            amount: { required, decimal },
+        }
     },
-    */
-    validations: {
-        amount: { required, decimal },
-    },
-    data: () => ({
-    }),
     computed: {
         amount: {
             get () {
@@ -39,11 +37,7 @@ export default {
             }
         },
         amountErrors () {
-        const errors = []
-        if (!this.$v.amount.$dirty) return errors
-        !this.$v.amount.required && errors.push('Please, enter return amount.') && this.$store.commit('form/validate', false)
-        !this.$v.amount.decimal && errors.push('Amount must be a number.') && this.$store.commit('form/validate', false)
-        return errors
+            return this.v$.amount.$errors.map(obj => obj.$message)
         },
     }
 }

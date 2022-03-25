@@ -6,29 +6,23 @@
         v-model="payment_details"
         required
         :error-messages="paymentDetailsErrors"
-        @input="$v.payment_details.$touch()"
-        @blur="$v.payment_details.$touch()"
+        @input="v$.payment_details.$touch()"
+        @blur="v$.payment_details.$touch()"
     >
-    
     </v-textarea>
 </template>
 
 <script>
-import { validationMixin } from 'vuelidate'
-import { required } from 'vuelidate/lib/validators'
+import useVuelidate from '@vuelidate/core'
+import { required } from '@vuelidate/validators'
 
 export default {
-    mixins: [validationMixin],
-    /*
-    props: {
-        addingRecord: Boolean,
+    validations() {
+        return {
+            payment_details: { required },
+        }
     },
-    */
-    validations: {
-        payment_details: { required },
-    },
-    data: () => ({
-    }),
+    setup: () => ({ v$: useVuelidate() }),
     computed: {
         payment_details: {
             get () {
@@ -43,10 +37,7 @@ export default {
             }
         },
         paymentDetailsErrors () {
-            const errors = []
-            if (!this.$v.payment_details.$dirty) return errors
-            !this.$v.payment_details.required && errors.push('Payment details is required.')
-            return errors
+            return this.v$.payment_details.$errors.map(obj => obj.$message)
         },
     }
 }

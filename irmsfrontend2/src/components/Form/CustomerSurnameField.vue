@@ -4,27 +4,22 @@
     label="Customer Surname"
     required
     :error-messages="customerSurnameErrors"
-    @input="$v.customer_surname.$touch()"
-    @blur="$v.customer_surname.$touch()"
+    @input="v$.customer_surname.$touch()"
+    @blur="v$.customer_surname.$touch()"
 ></v-text-field>
 </template>
 
 <script>
-import { validationMixin } from 'vuelidate'
-import { required } from 'vuelidate/lib/validators'
+import useVuelidate from '@vuelidate/core'
+import { required } from '@vuelidate/validators'
 
 export default {
-    mixins: [validationMixin],
-    /*
-    props: {
-        addingRecord: Boolean,
+    validations () {
+        return {
+            customer_surname: { required },
+        }
     },
-    */
-    validations: {
-        customer_surname: { required },
-    },
-    data: () => ({
-    }),
+    setup: () => ({ v$: useVuelidate() }),
     computed: {
         customer_surname: {
             get () {
@@ -38,12 +33,11 @@ export default {
             return this.$store.state.form.addingRecord
             }
         },
+
         customerSurnameErrors () {
-            const errors = []
-            if (!this.$v.customer_surname.$dirty) return errors
-            !this.$v.customer_surname.required && errors.push('Surname is required.')
-            return errors
+            return this.v$.customer_surname.$errors.map(obj => obj.$message)
         },
+
     }
 }
 </script>
