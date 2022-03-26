@@ -48,39 +48,51 @@ const actions = {
       return axios.get(`/api/v1/return-record/${router.currentRoute.params.record_uuid}/detail`)
         .then(response =>{
             commit('loadItem', response.data)
-
         })
         .catch(error =>{
             console.log(error)
         })
     },
     async saveData ({ commit, dispatch }) {
-      let payload = JSON.stringify(state.item)
+
+      let payload = JSON.stringify(state.item);
+      let params={
+        method: 'post',
+        url: '/api/v1/records-list/',
+        header: {
+          'Content-Type' :'application/json'
+        },
+        data: payload
+      }
+
       if (!state.addingRecord) {
-        let record_uuid = router.currentRoute.params.record_uuid
-        await axios.put(`/api/v1/return-record/${record_uuid}/detail`, payload , 
-          {
-            headers: {
-              'Content-Type': 'application/json'
-            }
-          }
-        ).then(() => {
-            commit('alert/showAlert', {
-              alertType: 'success',
-              alertMessages: ['Data saved correctly']
-            }, {root:true})      
-          }).catch(error =>{
-                console.log(error)
-                commit('alert/showAlert', {
-                  alertType: 'error',
-                  alertMessages: ['Something went wrong']
-                }, {root:true})
-              })
+        let record_uuid = router.currentRoute.params.record_uuid;
+        params.url = `/api/v1/return-record/${record_uuid}/detail`
+        params.method = 'put'
+      } 
+
+      await axios({...params}).then(
+        () => {
+          commit('alert/showAlert', {
+            alertType: 'success',
+            alertMessages: ['Data saved correctly']
+          }, {root:true})
+        }
+      ).catch(
+        (error) => {
+          console.log(error)
+          commit('alert/showAlert', {
+            alertType: 'error',
+            alertMessages: ['Something went wrong']
+          }, {root:true})
+        }
+      )
+      
+      if (!state.addingRecord) {
         dispatch('loadRecordFromAPI')
       } else {
-
-      }
-      
+        router.go('records-list')
+      }   
     }
 }
 

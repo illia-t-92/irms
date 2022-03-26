@@ -7,9 +7,6 @@
         @input="v$.amount.$touch()"
         @blur="v$.amount.$touch()"
     ></v-text-field>
-    <!--
-        
-    -->
 </template>
 
 <script>

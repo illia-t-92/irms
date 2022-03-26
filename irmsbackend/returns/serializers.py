@@ -5,7 +5,6 @@ from brands.serializers import BrandShortSerializer
 
 class ReturnRecordSerializer(serializers.ModelSerializer):
     brand=BrandShortSerializer()
-    status_verbose=serializers.CharField(source='get_status_display')
 
     class Meta:
         model=ReturnRecord
@@ -21,7 +20,6 @@ class ReturnRecordSerializer(serializers.ModelSerializer):
             'customer_account',
             'payment_details',
             'status',
-            'status_verbose',
             'comments',
             'get_absolute_url',
             'brand',

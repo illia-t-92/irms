@@ -84,7 +84,6 @@
 
 <script>
 import axios from 'axios'
-import { validationMixin } from 'vuelidate'
 import { useVuelidate } from '@vuelidate/core'
 import BrandsField from '@/components/Form/BrandsField'
 import ReturnIdField from '@/components/Form/ReturnIdField'
@@ -101,7 +100,6 @@ import CommentsField from '@/components/Form/CommentsField'
 
 
  export default {
-    mixins: [validationMixin],
     components: {
         BrandsField,
         ReturnIdField,
@@ -133,14 +131,13 @@ import CommentsField from '@/components/Form/CommentsField'
             if (!this.addingRecord) {
                 this.isEditing=!this.isEditing
             } else {
-                this.$router.go(-1)
+                this.returnToList()
             }
         },
         returnToList() {
             this.$router.go(-1)
         },
         async submitForm(){
-            //this.$store.dispatch('form/saveData')
             this.v$.$touch()
             if (this.v$.$invalid) {
                 this.$store.commit('alert/showAlert', {
