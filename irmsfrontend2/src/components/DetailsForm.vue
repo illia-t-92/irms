@@ -127,7 +127,7 @@ import CommentsField from '@/components/Form/CommentsField'
             }
         },
         returnToList() {
-            this.$router.go(-1)
+            this.$router.push('/returns-list')
         },
         async submitForm(){
             this.v$.$touch()
