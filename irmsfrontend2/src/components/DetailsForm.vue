@@ -115,14 +115,6 @@ import CommentsField from '@/components/Form/CommentsField'
         DateField
     },
     setup: () => ({ v$: useVuelidate() }),
-    /*
-    props: {
-        addingRecord: { 
-            type: Boolean,
-            required: true
-         },
-        },
-    */
     data: () => ({
         isEditing: false,
     }),
@@ -147,31 +139,6 @@ import CommentsField from '@/components/Form/CommentsField'
             } else {
                 this.$store.dispatch('form/saveData')
                 this.isEditing = false
-                /*
-                //let payload=JSON.stringify(this.item)
-                await axios.put(`/api/v1/return-record/${this.record_uuid}/detail`, payload, 
-                    {
-                        headers: {
-                            'Content-Type': 'application/json'
-                        }
-                    }
-                )
-                .then(() => {
-                    this.isEditing=false
-                    this.$store.commit('alert/showAlert', {
-                        alertType: 'success',
-                        alertMessages: ['Data saved correctly']
-                    })
-                    
-                })
-                .catch(error =>{
-                    console.log(error)
-                    this.$store.commit('alert/showAlert', {
-                        alertType: 'error',
-                        alertMessages: ['Something went wrong']
-                    })
-                })
-                */
             }
         },  
     },

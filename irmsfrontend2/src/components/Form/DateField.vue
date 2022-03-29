@@ -18,6 +18,7 @@
                 @blur="v$.operation_date.$touch()"
                 v-bind="attrs"
                 v-on="on"
+                value = "" 
             ></v-text-field>
         </template>
         <v-date-picker
@@ -58,7 +59,7 @@ export default {
                 return this.formatDate(operation_date)
             },
             set (value) {
-                let payload = { field: 'operation_date', value: value}
+                let payload = { field: 'operation_date', value: this.formatDate(value)}
                 this.$store.commit('form/changeFieldValue', payload)
             },
         addingRecord () {
