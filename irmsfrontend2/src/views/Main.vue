@@ -3,7 +3,7 @@
       <NavigationDrawer/>
       <AppBar/>
       <AlertBanner/>
-      <v-main fluid>
+      <v-main app fluid>
         <router-view></router-view>
       </v-main>
       <!--
