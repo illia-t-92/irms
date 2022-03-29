@@ -16,11 +16,6 @@ export default {
     components: {
         MenuList
     },
-    /*
-    data: () => ({
-        drawer: null,
-    }),
-    */
     computed: {
       drawerState: {
         get () { return this.$store.getters.drawerState },

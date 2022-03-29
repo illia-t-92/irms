@@ -8,7 +8,7 @@
             v-model="brand"
             :items="brands"
             item-text="name"
-            item-value="id"
+            item-value="code"
             label="Brand"
             :readonly="!addingRecord"
             :disabled="!addingRecord"
@@ -52,15 +52,17 @@ export default {
                 return this.$store.state.form.item.brand
             },
             set (value) {
-                let payload = { field: 'brand', value: value}
-                this.$store.commit('form/changeFieldValue', payload)
+                this.$store.commit('form/changeFieldValue', { 
+                    field: 'brand', 
+                    value: this.brands.find(({code}) => code === value) 
+                })
             },
         },   
         addingRecord () {
             return this.$store.state.form.addingRecord
         },
         brandErrors () {
-            return this.v$.brand.$errors.map(obj => obj.$message)
+            return this.v$.brand.$errors.map(({$message}) => $message)
         },
     },
     created () {

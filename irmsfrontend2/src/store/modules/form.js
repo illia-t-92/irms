@@ -16,7 +16,10 @@ const getDefaultState = () => {
       payment_details: '',
       status: '',
       comments: '',
-      brand: '',
+      brand: {
+        code: '',
+        name: '',
+      },
     },
   }
 }
@@ -56,13 +59,13 @@ const actions = {
     async saveData ({ commit, dispatch }) {
 
       let payload = JSON.stringify(state.item);
-      let params={
+      let params = {
         method: 'post',
         url: '/api/v1/records-list/',
         header: {
           'Content-Type' :'application/json'
         },
-        data: payload
+        data: state.item
       }
 
       if (!state.addingRecord) {
@@ -72,7 +75,13 @@ const actions = {
       } 
 
       await axios({...params}).then(
-        () => {
+        (response) => {
+          if (!state.addingRecord) {
+            dispatch('loadRecordFromAPI')
+          } else {
+            const record_uuid = response.data.uuid
+            router.push({name: 'record_details', params: {record_uuid} })
+          }
           commit('alert/showAlert', {
             alertType: 'success',
             alertMessages: ['Data saved correctly']
@@ -80,19 +89,12 @@ const actions = {
         }
       ).catch(
         (error) => {
-          console.log(error)
           commit('alert/showAlert', {
             alertType: 'error',
             alertMessages: ['Something went wrong']
           }, {root:true})
         }
-      )
-      
-      if (!state.addingRecord) {
-        dispatch('loadRecordFromAPI')
-      } else {
-        router.go('records-list')
-      }   
+      ) 
     }
 }
 
