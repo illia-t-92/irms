@@ -2,6 +2,7 @@
 *.pyc
 irmsenv/
 *.sqlite3
+*.env
 
 # fe
 .DS_Store
