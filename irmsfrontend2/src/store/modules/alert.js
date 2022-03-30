@@ -3,7 +3,7 @@ const state = () => ({
     alert: {
       status: false,
       type: '',
-      messages: '',
+      messages: [],
     }
   })
   
